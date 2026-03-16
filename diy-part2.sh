@@ -50,3 +50,6 @@ config rule
         option proto 'udp'
         option target 'ACCEPT'
 EOF
+# 强制修改 N60 Pro DTS 支持 2GB 内存
+find target/linux/mediatek/files-6.6/arch/arm64/boot/dts/mediatek/ -name "*n60-pro*.dts" | xargs sed -i 's/reg = <0x0 0x40000000 0x0 0x[0-9a-fA-F]*>/reg = <0x0 0x40000000 0x0 0x80000000>/g'
+find target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/ -name "*n60-pro*.dts" | xargs sed -i 's/reg = <0x0 0x40000000 0x0 0x[0-9a-fA-F]*>/reg = <0x0 0x40000000 0x0 0x80000000>/g'
