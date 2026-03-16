@@ -43,3 +43,5 @@ config rule
         option proto 'udp'
         option target 'ACCEPT'
 EOF
+# 针对 dailook 源码的 2GB 内存补丁
+find target/linux/mediatek/ -name "*n60-pro*.dts" | xargs sed -i 's/reg = <0x0 0x40000000 0x0 0x[0-9a-fA-F]*>/reg = <0x0 0x40000000 0x0 0x80000000>/g'
