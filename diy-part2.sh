@@ -50,5 +50,8 @@ config rule
         option proto 'udp'
         option target 'ACCEPT'
 EOF
-# 暴力替换：不管文件在哪，只要是 dts 文件里的内存定义全部改成 2GB
-find ./target/linux/mediatek/ -name "*.dts*" -exec sed -i 's/reg = <0x0 0x40000000 0x0 0x[0-9a-fA-F]*>/reg = <0x0 0x40000000 0x0 0x80000000>/g' {} +
+# 强制将所有 Mediatek 设备的内存定义暴力修改为 2GB (0x80000000)
+find ./target/linux/mediatek/ -type f -name "*.dts*" -o -name "*.dtsi*" | xargs sed -i 's/reg = <0x0 0x40000000 0x0 0x[0-9a-fA-F]*>/reg = <0x0 0x40000000 0x0 0x80000000>/g'
+
+# 针对某些源码可能存在的 hardcode 内存定义进行补充修改
+find ./target/linux/mediatek/ -type f -name "*.dts*" -o -name "*.dtsi*" | xargs sed -i 's/reg = <0x40000000 0x[0-9a-fA-F]*>/reg = <0x40000000 0x80000000>/g'
